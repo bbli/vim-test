@@ -72,6 +72,7 @@ endfunction
 " Returns the executable of your test runner
 function! test#cpp#catch2#executable()
     " Take advantage of the fact this will get called after test#cpp#catch2#build_position
+    let g:cpp = 1
     if s:is_suite
         let s:is_suite = v:false
         return "cd " . getcwd()

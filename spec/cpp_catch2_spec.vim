@@ -13,25 +13,19 @@ describe "Catch2"
   it "runs file tests"
     view +16 test_catch.cpp
     TestFile
-    Expect g:test#last_command == './test_catch'
-  end
-
-  it "runs nearest test while outside test function"
-    view test_catch.cpp
-    TestNearest
-    Expect g:test#last_command == './test_catch "Factorials are computed"'
+    Expect g:test#last_command =~ './test_catch'
   end
 
   it "run nearest test when nearest test is a TEST_CASE_METHOD"
     view +38 test_catch.cpp
     TestNearest
-    Expect g:test#last_command == './test_catch "sum"'
+    Expect g:test#last_command =~ "./test_catch 'sum'"
   end
 
   it "runs test suites"
     view test_catch.cpp
     TestSuite
-    Expect g:test#last_command == 'ctest'
+    Expect g:test#last_command =~ 'ctest'
   end
 
 end
