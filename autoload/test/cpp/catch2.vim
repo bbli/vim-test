@@ -36,7 +36,6 @@ endfunction
 function! test#cpp#catch2#build_position(type, position)
     if a:type ==# 'nearest'
         let name = s:nearest_test(a:position)
-        " echom "catch2 build position name var: " . string(name)
         return map(name,'shellescape(v:val)') "Since name may have spaces in it
     elseif a:type ==# 'file'
         return []
@@ -51,7 +50,6 @@ function! s:nearest_test(position) abort
 
   if empty(name['test'])
       " Search forward for the first declared method
-      " echom "catch2 searching forwards now"
       let f_name = test#base#nearest_test_in_lines(
                   \ a:position['file'],
                   \ a:position['line'],
@@ -72,18 +70,15 @@ endfunction
 " Returns the executable of your test runner
 function! test#cpp#catch2#executable()
     " Take advantage of the fact this will get called after test#cpp#catch2#build_position
-    let g:cpp = 1
     if s:is_suite
         let s:is_suite = v:false
-        return "cd " . getcwd()
-                    \ . "&& cd " . g:test#cpp#catch2#relToProject_build_dir
+        return "cd " . g:test#cpp#catch2#relToProject_build_dir
                     \ . g:test#cpp#catch2#suite_command 
     else
         if !exists('g:test#cpp#catch2#test_target')
             let g:test#cpp#catch2#test_target = expand("%:t:r")
         endif
-        return "cd "  . getcwd()
-                    \ . " && cd " . g:test#cpp#catch2#relToProject_build_dir  
+        return "cd " . g:test#cpp#catch2#relToProject_build_dir  
                     \ . " && " . g:test#cpp#catch2#make_command  . " " . g:test#cpp#catch2#test_target
                     \ . " && ./" . g:test#cpp#catch2#test_target
     endif
